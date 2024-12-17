@@ -1,11 +1,11 @@
 import { temporaryDirectory } from 'tempy'
 import { getRandomPort } from 'get-port-please'
-import { experimental_scaffoldTemplate } from '@tanstack/create-start'
+import { unstable_scaffoldTemplate } from '@tanstack/create-start'
 import { test } from '../../utils/setup'
 
 // Before running any tests - create the project in the temporary directory
 const projectPath = temporaryDirectory()
-await experimental_scaffoldTemplate({
+await unstable_scaffoldTemplate({
   cfg: {
     packageManager: {
       installDeps: true,
