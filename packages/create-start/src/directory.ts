@@ -45,18 +45,22 @@ const generateDefaultName = async () => {
   return `./${folderName}`
 }
 
+const validateDirectory = async (directory: string) => {
+  const absolutePath = getAbsolutePath(directory)
+  const pathExists = await doesPathExist(absolutePath)
+  if (!pathExists) return true
+  const folderEmpty = await isFolderEmpty(absolutePath)
+  if (folderEmpty) return true
+  return 'The directory is not empty. New projects can only be scaffolded in empty directories'
+}
+
 export const newProjectDirectoryCliOption = createOption(
   '--directory <string>',
   'The directory to scaffold your app in',
 ).argParser(async (directory) => {
-  const absolutePath = getAbsolutePath(directory)
-  const pathExists = await doesPathExist(absolutePath)
-  if (!pathExists) return directory
-  const folderEmpty = await isFolderEmpty(absolutePath)
-  if (folderEmpty) return directory
-  throw new InvalidArgumentError(
-    'The directory is not empty. New projects can only be scaffolded in empty directories',
-  )
+  const validationResult = await validateDirectory(directory)
+  if (validationResult === true) return directory
+  throw new InvalidArgumentError(validationResult)
 })
 
 export const newProjectDirectoryPrompt = async () => {
@@ -64,15 +68,7 @@ export const newProjectDirectoryPrompt = async () => {
     message: 'Where should the project be created?',
     default: await generateDefaultName(),
     validate: async (path) => {
-      const targetPath = getAbsolutePath(path)
-      const targetExists = await checkFolderExists(targetPath)
-      const targetIsEmpty = await checkFolderIsEmpty(targetPath)
-
-      if (targetExists && !targetIsEmpty) {
-        return 'The directory is not empty. New projects can only be scaffolded in empty directories'
-      }
-
-      return true
+      return await validateDirectory(path)
     },
   })
 }
