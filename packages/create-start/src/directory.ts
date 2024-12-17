@@ -2,7 +2,6 @@ import path from 'node:path'
 import fs from 'node:fs/promises'
 import { InvalidArgumentError, createOption } from '@commander-js/extra-typings'
 import { input } from '@inquirer/prompts'
-import { checkFolderExists, checkFolderIsEmpty } from './utils/helpers'
 
 export const getAbsolutePath = (relativePath: string) => {
   return path.resolve(process.cwd(), relativePath)
