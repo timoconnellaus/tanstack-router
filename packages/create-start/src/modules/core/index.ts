@@ -27,6 +27,33 @@ export const coreModule = createModule(
     schema.transform(async (vals, ctx) => {
       debug.verbose('Initializing core module schema', { vals })
 
+      const gitignore: z.infer<typeof gitModule._initSchema>['gitIgnore'] = [
+        {
+          sectionName: 'Dependencies',
+          lines: ['node_modules/'],
+        },
+        {
+          sectionName: 'Env',
+          lines: [
+            '.env',
+            '.env.local',
+            '.env.development',
+            '.env.test',
+            '.env.production',
+            '.env.staging',
+          ],
+        },
+        {
+          sectionName: 'System Files',
+          lines: ['.DS_Store', 'Thumbs.db'],
+        },
+      ]
+
+      vals.git = {
+        ...vals.git,
+        gitIgnore: [...(vals.git?.gitIgnore ?? []), ...gitignore],
+      }
+
       const packageJson: z.infer<typeof packageJsonModule._initSchema> = {
         type: 'new',
         dependencies: await deps([

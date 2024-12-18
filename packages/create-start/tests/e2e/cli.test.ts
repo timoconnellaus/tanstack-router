@@ -1,6 +1,6 @@
-import { readFile, rm } from 'node:fs/promises'
+import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
-import { afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { temporaryDirectoryTask } from 'tempy'
 import { runCli } from '../../src/cli'
 
@@ -59,6 +59,7 @@ describe('cli e2e', () => {
 
       // Check core files exist
       const expectedFiles = [
+        '.gitignore',
         'package.json',
         'tsconfig.json',
         'app.config.ts',
