@@ -18,11 +18,11 @@
     "create-router": "index.js"
   },
   "scripts": {
-    "dev": "unbuild --stub --watch",
+    "dev": "BUILD_ENV=development unbuild --stub --watch",
     "clean": "rimraf ./dist && rimraf ./coverage",
     "test:eslint": "eslint ./src",
     "generate-templates": "node ./dist/generate-templates/index.mjs",
-    "build": "unbuild && node ./copyTemplates.mjs",
+    "build": "BUILD_ENV=production unbuild && node ./copyTemplates.mjs",
     "test": "vitest run",
     "test:watch": "vitest watch",
     "test:coverage": "vitest run --coverage"
