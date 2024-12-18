@@ -1,5 +1,7 @@
 import { defineBuildConfig } from 'unbuild'
 
+// Separeate config required for dev because mkdist + cli-entry doesn't work
+// with stub. It will create a .d.ts and .mjs file in the src folder
 const dev = defineBuildConfig({
   entries: ['src/cli-entry'],
   outDir: 'dist',
